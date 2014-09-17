@@ -1,15 +1,37 @@
-## Put comments here that give an overall description of what your
-## functions do
+## The point of this program is to solve for the inverse of a user inputted 
+## matrix. Then it can solve for the inverse of the matrix. Before solving, 
+## however, the program checks cache to see if the inverse was already
+## solved. If so, it returns the cached value. If not, it solves
 
-## Write a short comment describing this function
+## The makeCacheMatrix creates a matrix from user input. The function 
+## is a list that contains four other functions for set, get, setsolve
+## and getsolve
 
-makeCacheMatrix <- function(x = matrix()) {
-
+makeCacheMatrix <- function(x = matrix()) {    
+    m <- NULL
+    set <- function(y) {
+        x <<-y
+        m <<- NULL
+    } 
+    get <- function() x
+    setsolve <- function(inv) m <<- inv
+    getsolve <- function() m
+    list(set = set, get = get, setsolve = setsolve, getsolve = getsolve)
 }
 
 
-## Write a short comment describing this function
+## cacheSolve first checks if the matrix inverse was already solved and
+## stored in cache. If so, it returns the cache value. If not, it gets
+## the matrix, solves the inverse, sets the inverse, and returns the inverse
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+    m <- x$getsolve()
+    if(!is.null(m)) {
+        message("getting cached data")
+        return(m)
+    }
+    data <- x$get()
+    m <- solve(data, ...)
+    x$setsolve(m)
+    m
 }
